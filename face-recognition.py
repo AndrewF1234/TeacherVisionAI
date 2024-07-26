@@ -19,7 +19,7 @@ for filename in os.listdir("teacher_photos"):
     
 for teacher in teacher_list:
     encoding_list.append(face_recognition.face_encodings(teacher)[0])
-    
+
 # Initialize some variables
 face_locations = []
 face_encodings = []
@@ -35,6 +35,9 @@ while True:
     print(attendance)
     # Grab a single frame of video
     ret, frame = video_capture.read()
+
+    fps = int(video_capture.get(5))
+    print("fps:", fps)
 
     # Only process every other frame of video to save time
     if process_this_frame:
