@@ -5,8 +5,8 @@ import os
 
 video_capture = cv2.VideoCapture(0)
 
-cap.set(cv2.CAP_PROP_FPS, 60)
-fps = int(cap.get(5))
+video_capture.set(cv2.CAP_PROP_FPS, 60)
+fps = int(video_capture.get(5))
 print("fps:", fps)
 
 teacher_list = []
