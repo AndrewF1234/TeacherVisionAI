@@ -36,6 +36,7 @@ while True:
     # Grab a single frame of video
     ret, frame = video_capture.read()
 
+    video_capture.set(cv2.CAP_PROP_FPS, 30)
     fps = int(video_capture.get(5))
     print("fps:", fps)
 
