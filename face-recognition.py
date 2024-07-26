@@ -1,33 +1,25 @@
 import face_recognition
-import cv2 as cv
+import cv2
 import numpy as np
+import os
 
-video = cv.VideoCapture(0)
+video_capture = cv2.VideoCapture(0)
 
 teacher_list = []
 encoding_list = []
 teacher_name_list = []
 
-for filename in os.listdir("/teacher_photos"):
+for filename in os.listdir("teacher_photos"):
     if filename.endswith(".jpg"):  # Adjust extension if needed
-      teacher.append(face_recognition.load_image_file(filename))
+      teacher_list.append(face_recognition.load_image_file("teacher_photos/" + filename))
     
-for filename in os.listdir("/teacher_photos"):
+for filename in os.listdir("teacher_photos"):
     if filename.endswith(".jpg"):  # Adjust extension if needed
       teacher_name_list.append(filename[:-4])
     
 for teacher in teacher_list:
     encoding_list.append(face_recognition.face_encodings(teacher)[0])
     
-known_face_encodings = [
-    obama_face_encoding,
-    biden_face_encoding
-]
-known_face_names = [
-    "Barack Obama",
-    "Joe Biden"
-]
-
 # Initialize some variables
 face_locations = []
 face_encodings = []
