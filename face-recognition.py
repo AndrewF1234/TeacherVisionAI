@@ -29,6 +29,12 @@ if not os.path.exists(file_path) or os.path.getsize(file_path) == 0:
     with open(file_path, 'w') as f:
         f.write('Name,TimeIN,TimeOUT\n')
 
+# Will load and add names to lists
+for filename in os.listdir("teacher_photos"):
+    if filename.endswith(".jpg"):  # Adjust extension if needed
+        encoding_list.append(face_recognition.face_encodings(face_recognition.load_image_file("teacher_photos/" + filename))[0])
+        teacher_name_list.append(filename[:-4])
+
 while True:
     
     print(attendance)
