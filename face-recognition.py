@@ -1,34 +1,24 @@
 import face_recognition
-import cv2
+import cv2 as cv
 import numpy as np
 import os
 
-video_capture = cv2.VideoCapture(0)
+video_capture = cv.VideoCapture(0)
 
-teacher_list = []
-encoding_list = []
-teacher_name_list = []
-
-for filename in os.listdir("teacher_photos"):
-    if filename.endswith(".jpg"):  # Adjust extension if needed
-      teacher_list.append(face_recognition.load_image_file("teacher_photos/" + filename))
-    
-for filename in os.listdir("teacher_photos"):
-    if filename.endswith(".jpg"):  # Adjust extension if needed
-      teacher_name_list.append(filename[:-4])
-    
-for teacher in teacher_list:
-    encoding_list.append(face_recognition.face_encodings(teacher)[0])
-
-# Initialize some variables
+encoding_list = [] # Contains face encodings in HOG patterns
+teacher_name_list = [] # Contains a list of names 
 face_locations = []
 face_encodings = []
 face_names = []
-process_this_frame = True
-
+process_this_frame = True # Allows to process everyother frame for FPS
 count = 0
-
 attendance = []
+
+# Will load and add names to lists
+for filename in os.listdir("teacher_photos"):
+    if filename.endswith(".jpg"):  # Adjust extension if needed
+        encoding_list.append(face_recognition.face_encodings(face_recognition.load_image_file("teacher_photos/" + filename))[0])
+        teacher_name_list.append(filename[:-4])
 
 while True:
     
@@ -37,14 +27,14 @@ while True:
     ret, frame = video_capture.read()
 
     video_capture.set(cv.CAP_PROP_FOURCC, cv.VideoWriter_fourcc('M', 'J', 'P', 'G'))
-    video_capture.set(cv2.CAP_PROP_FPS, 30)
+    video_capture.set(cv.CAP_PROP_FPS, 30)
     fps = int(video_capture.get(5))
     print("fps:", fps)
 
     # Only process every other frame of video to save time
     if process_this_frame:
         # Resize frame of video to 1/4 size for faster face recognition processing
-        small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+        small_frame = cv.resize(frame, (0, 0), fx=0.25, fy=0.25)
 
         # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
         rgb_small_frame = small_frame[:, :, ::-1]
@@ -93,21 +83,21 @@ while True:
         left *= 4
 
         # Draw a box around the face
-        cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+        cv.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
 
         # Draw a label with a name below the face
-        cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
-        font = cv2.FONT_HERSHEY_DUPLEX
-        cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+        cv.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv.FILLED)
+        font = cv.FONT_HERSHEY_DUPLEX
+        cv.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 
     # Display the resulting image
-    cv2.imshow('Video', frame)
+    cv.imshow('Video', frame)
 
     # Hit 'q' on the keyboard to quit!
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    if cv.waitKey(1) & 0xFF == ord('q'):
         break
 
 # Release handle to the webcam
 video_capture.release()
-cv2.destroyAllWindows()
+cv.destroyAllWindows()
 
