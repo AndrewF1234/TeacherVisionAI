@@ -37,6 +37,29 @@ for filename in os.listdir("teacher_photos"):
         encoding_list.append(face_recognition.face_encodings(face_recognition.load_image_file("teacher_photos/" + filename))[0])
         teacher_name_list.append(filename[:-4])
 
+def markAttendance(name):
+    with open('attendance.csv', 'r+') as f:
+        myDataList = f.readlines()
+        nameList = []
+        index = None
+        startTime = None
+        for i, line in enumerate(myDataList):
+            entry = line.strip().split(',')
+            nameList.append(entry[0])
+            if entry[0] == name:
+                startTime = entry[1]
+                index = i
+
+        now = datetime.now()
+        dtString = now.strftime('%H:%M:%S')
+        
+        if index is not None:
+            myDataList[index] = f'{name},{startTime},{dtString}\n'
+            f.seek(0)
+            f.writelines(myDataList)
+        else:
+            f.write(f'{name},{dtString}\n')
+
 while True:
     
     print(attendance)
@@ -114,29 +137,6 @@ while True:
     # Hit 'q' on the keyboard to quit!
     if cv.waitKey(1) & 0xFF == ord('q'):
         break
-
-def markAttendance(name):
-    with open('attendance.csv', 'r+') as f:
-        myDataList = f.readlines()
-        nameList = []
-        index = None
-        startTime = None
-        for i, line in enumerate(myDataList):
-            entry = line.strip().split(',')
-            nameList.append(entry[0])
-            if entry[0] == name:
-                startTime = entry[1]
-                index = i
-
-        now = datetime.now()
-        dtString = now.strftime('%H:%M:%S')
-        
-        if index is not None:
-            myDataList[index] = f'{name},{startTime},{dtString}\n'
-            f.seek(0)
-            f.writelines(myDataList)
-        else:
-            f.write(f'{name},{dtString}\n')
 
 # Release handle to the webcam
 video_capture.release()
