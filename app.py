@@ -33,8 +33,7 @@ def generate_frames():
     global process_this_frame, count  # Declare global variables
     camera = cv2.VideoCapture(0)  # Use 0 for webcam, or provide a video file path
 
-    fps = int(cap.get(5))
-    print("fps:", fps)
+    
 
     while True:
         success, frame = camera.read()

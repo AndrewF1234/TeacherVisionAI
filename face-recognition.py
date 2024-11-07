@@ -14,6 +14,8 @@ face_names = []
 process_this_frame = True # Allows to process everyother frame for FPS
 count = 0
 attendance = []
+file_path = "attendance.csv"
+frameVerification = 2
 
 # Will load and add names to lists
 for filename in os.listdir("teacher_photos"):
@@ -77,7 +79,8 @@ while True:
             if matches[best_match_index]:
                 name = teacher_name_list[best_match_index]
                 count += 1
-                if count >= 60:
+                if count >= frameVerification:
+                    print(name + "Has been Recorded")
                     count = 0;
                     markAttendance(name)
                     
