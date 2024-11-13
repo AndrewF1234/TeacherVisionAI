@@ -77,14 +77,6 @@ while True:
         # Resize frame of video to 1/4 size for faster face recognition processing
         small_frame = cv.resize(frame, (0, 0), fx=0.25, fy=0.25)
 
-        font = cv2.FONT_HERSHEY_SIMPLEX 
-        new_frame_time = time.time() 
-        fps = 1/(new_frame_time-prev_frame_time) 
-        prev_frame_time = new_frame_time 
-        fps = int(fps) 
-        fps = str(fps) 
-        cv2.putText(gray, fps, (7, 70), font, 3, (100, 255, 0), 3, cv2.LINE_AA) 
-
         # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
         rgb_small_frame = small_frame[:, :, ::-1]
         
@@ -139,6 +131,8 @@ while True:
         cv.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv.FILLED)
         font = cv.FONT_HERSHEY_DUPLEX
         cv.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+        fps = int(video_capture.get(5))
+        cv.putText(small_frame, fps, (7, 70), font, 3, (100, 255, 0), 3, cv.LINE_AA)
 
     # Display the resulting image
     cv.imshow('Video', frame)
