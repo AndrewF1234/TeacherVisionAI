@@ -1,8 +1,8 @@
 import face_recognition
 import cv2 as cv
 import numpy as np
+import datetime
 import os
-from datetime import datetime
 
 video_capture = cv.VideoCapture(0)
 
@@ -16,7 +16,7 @@ process_this_frame = True # Allows to process everyother frame for FPS
 count = 0
 attendance = []
 file_path = "attendance.csv"
-frameVerification = 4
+frameVerification = 2
 
 # Will load and add names to lists
 for filename in os.listdir("teacher_photos"):
@@ -56,11 +56,7 @@ def markAttendance(name):
         
         if index is not None:
             myDataList[index] = f'{name},{startTime},{dtString}\n'
-	    file = csv.reader(f)
-            for i in list(file)
-		if(len(i)==0)
-		     f.seek(i)
-		     break
+            f.seek(0) 
             f.writelines(myDataList)
         else:
             f.write(f'{name},{dtString}\n')
