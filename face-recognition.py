@@ -51,7 +51,7 @@ def markAttendance(name):
                 startTime = entry[1]
                 index = i
 
-        now = datetime.now()
+        now = datetime.datetime.now()
         dtString = now.strftime('%H:%M:%S')
         
         if index is not None:
@@ -68,7 +68,7 @@ while True:
     ret, frame = video_capture.read()
 
     video_capture.set(cv.CAP_PROP_FOURCC, cv.VideoWriter_fourcc('M', 'J', 'P', 'G'))
-    video_capture.set(cv.CAP_PROP_FPS, 30)
+    video_capture.set(cv.CAP_PROP_FPS, 3)
     fps = int(video_capture.get(5))
     print("fps:", fps)
 
@@ -76,6 +76,14 @@ while True:
     if process_this_frame:
         # Resize frame of video to 1/4 size for faster face recognition processing
         small_frame = cv.resize(frame, (0, 0), fx=0.25, fy=0.25)
+
+        font = cv2.FONT_HERSHEY_SIMPLEX 
+        new_frame_time = time.time() 
+        fps = 1/(new_frame_time-prev_frame_time) 
+        prev_frame_time = new_frame_time 
+        fps = int(fps) 
+        fps = str(fps) 
+        cv2.putText(gray, fps, (7, 70), font, 3, (100, 255, 0), 3, cv2.LINE_AA) 
 
         # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
         rgb_small_frame = small_frame[:, :, ::-1]
